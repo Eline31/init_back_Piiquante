@@ -1,8 +1,13 @@
 const express = require("express");
 const app = express();
+// const userSchema = require("./models/user");
+app.use((req, res) => {
+    res.json({ message: "Requête reçue !" });
+});
+
+/**DOTENV ***********************************************************/
 const dotenv = require("dotenv");
 dotenv.config();
-const userSchema = require("./models/user");
 
 const MY_PORT = process.env.PORT;
 const MY_APP_SECRET = process.env.APP_SECRET;
@@ -12,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(MY_PORT, () => console.log(`Server running on port ${MY_PORT}`));
+/**FIN DOTENV ***********************************************************/
 
 module.exports = app;
 
