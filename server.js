@@ -2,7 +2,6 @@ const http = require("http");
 const app = require("./app");
 const dotenv = require("dotenv");
 dotenv.config();
-const userSchema = require("./models/user");
 
 const MY_PORT = process.env.PORT;
 const MY_APP_SECRET = process.env.APP_SECRET;
@@ -14,7 +13,7 @@ app.get("/", (req, res, next) => {
 
 app.listen(MY_PORT, () => console.log(`Server running on port ${MY_PORT}`));
 
-
+module.exports = app;
 
 // /**Fonction de gestion des erreurs du serveur - elle les recherche et les gère de manière appropriée*/
 // const errorHandler = error => {
