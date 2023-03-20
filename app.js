@@ -22,11 +22,13 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 /**Middleware pour extraire le corps JSON afin de gérer la requête post */
 app.use(express.json());
 
+
 app.use("/api/sauces", apiSauceRoutes);
 app.use("/api/auth", apiUserRoutes);
-app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;
