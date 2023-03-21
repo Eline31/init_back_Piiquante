@@ -9,7 +9,6 @@ exports.signup = (req, res, next) => {
                 email: req.body.email,
                 password: hash
             });
-            console.log(user);
             user.save()
                 .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
                 .catch(error => res.status(400).json({ error }));
@@ -20,6 +19,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
+            console.log(user);
             if (!user) {
                 return res.status(401).json({ message: "Paire login/mot de passe incorrecte" });
             }

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
+// const uniqueValidator = require("mongoose-unique-validator");
 
 /**Création d'un schéma de données contenant les champs souhaités */
 const userSchema = mongoose.Schema({
@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
 });
 
+module.exports = mongoose.model("User", userSchema);
+
 // userSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model("User", userSchema);
