@@ -41,16 +41,15 @@ exports.likeSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
             if (req.body.like = 1) {
-                sauce.usersLiked.$push(req.body.userId);
+                sauce.usersLiked.push(req.body.userId);
                 sauce.likes++;
                 res.status(200).json({ message: "Votre like a bien été pris en compte !" });
             } if (req.body.like = 0) {
-                // sauce.usersLiked.filter((user) => user.userId !== req.body.userId);
-                sauce.usersLiked.$pull(req.body.userId);
+                sauce.usersLiked.filter((user) => user.userId !== req.body.userId);
                 sauce.likes--;
                 res.status(200).json({ message: "Votre like a bien été retiré !" });
             } if (req.body.like = -1) {
-                sauce.usersDisliked.$push(req.body.userId);
+                sauce.usersDisliked.push(req.body.userId);
                 sauce.dislikes++;
                 res.status(200).json({ message: "Votre dislike a bien été pris en compte !" });
             } if (req.body.dislike = 0) {
@@ -103,3 +102,4 @@ exports.deleteSauce = (req, res, next) => {
             res.status(500).json({ error });
         });
 };
+
