@@ -23,8 +23,8 @@ const userSchema = mongoose.Schema({
 // emailValidator.validate(userSchema.email);
 // schemaPassword.validate(userSchema.password);
 
-validator.isEmail(userSchema.email);
-validator.isStrongPassword(userSchema.password);
+validator.isEmail("userSchema.email");
+validator.isStrongPassword("userSchema.password");
 
 module.exports = mongoose.model("User", userSchema);
 
