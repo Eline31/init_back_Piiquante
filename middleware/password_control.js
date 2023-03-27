@@ -10,8 +10,6 @@ passwordSchema
     .has().digits(2)
     .has().not().spaces()
 
-console.log("passwordSchema", passwordSchema);
-
 /**Vérification de la validité du mot de passe */
 module.exports = (req, res, next) => {
     if (passwordSchema.validate(req.body.password)) {

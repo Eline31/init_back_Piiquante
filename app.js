@@ -22,12 +22,15 @@ app.use((req, res, next) => {
     next();
 });
 
+/**Ajout du chemin statique à l'application pour servir les images */
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 /**Middleware pour extraire le corps JSON afin de gérer la requête post */
 app.use(express.json());
 
-app.use("/api/sauces", apiSauceRoutes);
+/**Route d'authentification */
 app.use("/api/auth", apiUserRoutes);
+/**Route pour les sauces */
+app.use("/api/sauces", apiSauceRoutes);
 
 module.exports = app;
