@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
-/**Création d'un schéma de données contenant les champs souhaités */
+/**Modèle d'un utilisateur */
 const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },

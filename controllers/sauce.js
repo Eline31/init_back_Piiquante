@@ -15,9 +15,7 @@ exports.getOneSauce = (req, res, next) => {
         .catch((error) => res.status(404).json({ error }));
 };
 
-/**On expose la logique de la route Post en tant que fonction appelée createSauce() */
 /**Enregistre une nouvelle sauce et son image */
-//Il me manque la gestion de l'image file
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;

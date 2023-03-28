@@ -28,9 +28,9 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 /**Middleware pour extraire le corps JSON afin de gérer la requête post */
 app.use(express.json());
 
-/**Route d'authentification */
+/**Route de base pour les routes d'authentification */
 app.use("/api/auth", apiUserRoutes);
-/**Route pour les sauces */
+/**Route de base pour les routes de gestion des sauces */
 app.use("/api/sauces", apiSauceRoutes);
 
 module.exports = app;
