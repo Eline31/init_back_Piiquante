@@ -8,7 +8,10 @@ passwordSchema
     .is().uppercase()
     .is().lowercase()
     .has().digits(2)
+    .has().symbols()
     .has().not().spaces()
+    .has().not("'", "=") //Car ces caractères peuvent être interpréter par le moteur de base de données
+
 
 /**Vérification de la validité du mot de passe */
 module.exports = (req, res, next) => {

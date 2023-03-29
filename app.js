@@ -1,12 +1,14 @@
 const express = require("express");
 const app = express();
+const helmet = require("helmet");
 const mongoose = require("mongoose");
 const apiSauceRoutes = require("./routes/sauce");
 const apiUserRoutes = require("./routes/user");
 const path = require("path");
+require("dotenv").config();
 
 /**Connexion de l'API à la base de données MongoDB */
-mongoose.connect("mongodb+srv://Piiquante_API:pyzMrvQgGdjHgziB@cluster0.2ol13jn.mongodb.net/?retryWrites=true&w=majority",
+mongoose.connect(process.env.SECRET_DB,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -27,6 +29,9 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 /**Middleware pour extraire le corps JSON afin de gérer la requête post */
 app.use(express.json());
+
+/**Utilisation d'helmet qui va créer des headers pour sécuriser l'application */
+app.use(helmet());
 
 /**Route de base pour les routes d'authentification */
 app.use("/api/auth", apiUserRoutes);
