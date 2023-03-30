@@ -83,7 +83,7 @@ exports.updateSauce = (req, res, next) => {
 
     delete sauceObject._userId;
     Sauce.findOne({ _id: req.params.id })
-        .then((sauce) => {
+        .then(sauce => {
             if (sauce.userId != req.auth.userId) {
                 res.status(401).json({ message: "Pas autorisé" });
             } else {
