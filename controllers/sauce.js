@@ -76,23 +76,26 @@ exports.likeSauce = (req, res, next) => {
 
 /**Met à jour la sauce */
 exports.updateSauce = (req, res, next) => {
-    const sauceObject = req.file ? {
-        ...JSON.parse(req.body.sauce),
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-    } : { ...req.body };
-
-    delete sauceObject._userId;
-    Sauce.findOne({ _id: req.params.id })
-        .then(sauce => {
-            if (sauce.userId != req.auth.userId) {
-                res.status(401).json({ message: "Pas autorisé" });
-            } else {
-                Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-                    .then(() => res.status(200).json({ message: "Votre sauce a bien été mise à jour !" }))
-                    .catch(error => res.status(401).json({ error }));
-            }
-        })
-        .catch((error) => res.status(400).json({ error }));
+    let sauceObjet = {};
+    req.file ? (
+        Sauce.findOne({
+            _id: req.params.id
+        }).then((sauce) => {
+            const filename = sauce.imageUrl.split('/images/')[1]
+            fs.unlinkSync(`images/${filename}`)
+        }),
+        sauceObjet = {
+            ...JSON.parse(req.body.sauce),
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        }
+    ) : (
+        sauceObjet = {
+            ...req.body
+        }
+    )
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObjet, _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'votre sauce a bien été modifiée!' }))
+        .catch(error => res.status(500).json({ error }));
 };
 
 /**Supprime la sauce */
