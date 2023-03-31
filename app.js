@@ -16,6 +16,7 @@ mongoose.connect(process.env.SECRET_DB,
     .then(() => console.log("Connexion à MongDB réussie !"))
     .catch(() => console.log("Connexion à MongoDB échouée !"));
 
+/****************ROUTES DE BASE CONCERNANT TOUTE REQUÊTE */
 /**Pour mettre en place CORS et permettre à des requêtes de partout d'arriver sur notre API*/
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,9 +34,9 @@ app.use(express.json());
 /**Utilisation d'helmet qui va créer des headers pour sécuriser l'application */
 app.use(helmet());
 
-/**Route de base pour les routes d'authentification */
+/**Points d'accès de base pour les routes d'authentification */
 app.use("/api/auth", apiUserRoutes);
-/**Route de base pour les routes de gestion des sauces */
+/**Points d'accès de base pour les routes de gestion des sauces */
 app.use("/api/sauces", apiSauceRoutes);
 
 module.exports = app;
