@@ -6,6 +6,7 @@ const apiSauceRoutes = require("./routes/sauce");
 const apiUserRoutes = require("./routes/user");
 const path = require("path");
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
 
 /**Connexion de l'API à la base de données MongoDB */
 mongoose.connect(process.env.SECRET_DB,
@@ -38,5 +39,8 @@ app.use(helmet());
 app.use("/api/auth", apiUserRoutes);
 /**Points d'accès de base pour les routes de gestion des sauces */
 app.use("/api/sauces", apiSauceRoutes);
+
+/**Configuration de cookie-parser */
+app.use(cookieParser());
 
 module.exports = app;
