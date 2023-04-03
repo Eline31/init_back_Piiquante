@@ -11,8 +11,8 @@ exports.getAllSauces = (req, res, next) => {
 /**Renvoie la sauce avec l'id fourni */
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
-        .then((sauce) => { res.status(200).json(sauce) })
-        .catch((error) => res.status(404).json({ error }));
+        .then(sauce => { res.status(200).json(sauce) })
+        .catch(error => res.status(404).json({ error }));
 };
 
 /**Enregistre une nouvelle sauce et son image */
@@ -82,24 +82,28 @@ exports.likeSauce = (req, res, next) => {
 
 /**Met à jour la sauce */
 exports.updateSauce = (req, res, next) => {
-    let sauceObjet = {};
-    req.file ? (
-        Sauce.findOne({
-            _id: req.params.id
-        }).then(sauce => {
-            const filename = sauce.imageUrl.split('/images/')[1]
-            fs.unlinkSync(`images/${filename}`)
-        }),
-        sauceObjet = {
-            ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        }
-    ) : (
-        sauceObjet = {
-            ...req.body
-        }
-    )
-    Sauce.updateOne({ _id: req.params.id }, { ...sauceObjet, _id: req.params.id })
+    Sauce.findOne({
+        _id: req.params.id
+    })
+        .then(sauce => {
+            if (sauce.userId !== req.auth.userId) {
+                return res.status(403);
+            };
+            let sauceObjet = {};
+            if (req.file) {
+                const filename = sauce.imageUrl.split('/images/')[1]
+                fs.unlinkSync(`images/${filename}`)
+                sauceObjet = {
+                    ...JSON.parse(req.body.sauce),
+                    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                }
+            } else {
+                sauceObjet = {
+                    ...req.body
+                }
+            };
+            return Sauce.updateOne({ _id: req.params.id }, { ...sauceObjet, _id: req.params.id })
+        })
         .then(() => res.status(200).json({ message: 'votre sauce a bien été modifiée!' }))
         .catch(error => res.status(500).json({ error }));
 };
