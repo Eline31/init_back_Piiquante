@@ -1,9 +1,16 @@
+
+// Application utilisant le framework Express
+// utilise mongoose pour la gestion de la base de données MongoDB
+
 const express = require("express");
 const app = express();
 const helmet = require("helmet");
 const mongoose = require("mongoose");
+
+// Routeurs pour les "sauces" et les "utilisateurs"
 const apiSauceRoutes = require("./routes/sauce");
 const apiUserRoutes = require("./routes/user");
+// importation de path pour accéder au path de notre serveur
 const path = require("path");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
@@ -26,13 +33,13 @@ app.use((req, res, next) => {
     next();
 });
 
-/**Ajout du chemin statique à l'application pour servir les images */
+// répond aux requêtes à /images en rendant notre dossier images statique 
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-/**Middleware pour extraire le corps JSON afin de gérer la requête post */
+// transforme le corps de la requête en objet JSON
 app.use(express.json());
 
-/**Utilisation d'helmet qui va créer des headers pour sécuriser l'application */
+/**Utilisation d'helmet qui va sécuriser les entêtes */
 app.use(helmet());
 
 /**Points d'accès de base pour les routes d'authentification */
@@ -43,4 +50,6 @@ app.use("/api/sauces", apiSauceRoutes);
 /**Configuration de cookie-parser */
 app.use(cookieParser());
 
+// exportation de l'application pour pouvoir y accéder depuis
+// d'autres fichiers notamment le serveur node
 module.exports = app;

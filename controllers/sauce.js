@@ -16,13 +16,19 @@ exports.getOneSauce = (req, res, next) => {
 };
 
 /**Enregistre une nouvelle sauce et son image */
+// instance du modèle Sauce
 exports.createSauce = (req, res, next) => {
+    // analyse de la requête pour obtenir un objet utilisable
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     delete sauceObject._userId;
     const sauce = new Sauce({
+        // ...sauceObject = opérateur spread : copie les champs dans le body
+        // de la request
         ...sauceObject,
         userId: req.auth.userId,
+        // on modifie url de l'image avec une adresse dynamique valable aussi
+        // en production
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
         likes: 0,
         dislikes: 0,
@@ -80,7 +86,7 @@ exports.updateSauce = (req, res, next) => {
     req.file ? (
         Sauce.findOne({
             _id: req.params.id
-        }).then((sauce) => {
+        }).then(sauce => {
             const filename = sauce.imageUrl.split('/images/')[1]
             fs.unlinkSync(`images/${filename}`)
         }),
