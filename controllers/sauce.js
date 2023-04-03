@@ -82,26 +82,32 @@ exports.likeSauce = (req, res, next) => {
 
 /**Met à jour la sauce */
 exports.updateSauce = (req, res, next) => {
-    let sauceObjet = {};
-    req.file ? (
-        Sauce.findOne({
-            _id: req.params.id
-        }).then(sauce => {
+    Sauce.findOne({
+        _id: req.params.id
+    })
+    .then(sauce => {
+        if (sauce.userId !== req.auth.userId) {
+            return res.status(403);
+        }
+        
+        let sauceObjet = {};
+        if (req.file) {
             const filename = sauce.imageUrl.split('/images/')[1]
             fs.unlinkSync(`images/${filename}`)
-        }),
-        sauceObjet = {
-            ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            sauceObjet = {
+                ...JSON.parse(req.body.sauce),
+                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            }
+        } else {
+            sauceObjet = {
+                ...req.body
+            }
         }
-    ) : (
-        sauceObjet = {
-            ...req.body
-        }
-    )
-    Sauce.updateOne({ _id: req.params.id }, { ...sauceObjet, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'votre sauce a bien été modifiée!' }))
-        .catch(error => res.status(500).json({ error }));
+
+        return Sauce.updateOne({ _id: req.params.id }, { ...sauceObjet, _id: req.params.id })
+    })
+    .then(() => res.status(200).json({ message: 'votre sauce a bien été modifiée!' }))
+    .catch(error => res.status(500).json({ error }));
 };
 
 /**Supprime la sauce */
